@@ -9,6 +9,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -35,13 +36,13 @@
     require('config.php');
 
     // Insert Data
-    if (isset($_REQUEST['name'])) {
+    if (isset($_REQUEST['description'])) {
 
-        for ($i = 0; $i < count($_REQUEST['name']); $i++) {
-            $name = $_REQUEST['name'][$i];
-            $email = $_REQUEST['email'][$i];
+        for ($i = 0; $i < count($_REQUEST['description']); $i++) {
+            $description = $_REQUEST['description'][$i];
+            $remark = $_REQUEST['remark'][$i];
 
-            $sql = "INSERT INTO check_list(description,remark) VALUES('$name','$email ')";
+            $sql = "INSERT INTO check_list(description,remark) VALUES('$description','$remark ')";
             $result = mysqli_query($con, $sql);
         }
 
@@ -56,43 +57,49 @@
 
 
     <div class="contaner">
-        <div class="row">
+        <div class="row p-2">
             <div class="col-md-6">
                 <h1>ADD DATA</h1>
 
+                <!-- Add Form -->
+                <form id="myForm" action="" method="POST" class="shadow p-2 bg-info">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" required>
+                    <!-- <textarea name="" id="description" cols="3" rows="3"></textarea> -->
 
-                <form id="myForm" action="" method="POST">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
+                    <label for="remark">Remerk:</label>
+                    <input type="text" id="remark" required>
 
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                    <button type="button" id="submitBtn" class="btn btn-sm btn-success">ADD</button>
+                </form><br><br>
 
-                    <button type="button" id="submitBtn">ADD</button>
-
-                </form>
-
-
-                <form action="" method="POST">
-                    <table id="dataTable">
+                <!-- Table form -->
+                <form action="" method="POST" class="shadow p-2">
+                    <table id="dataTable" class="table">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
+                                <th>Description</th>
+                                <th>Remark</th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Table content will be dynamically added here -->
                         </tbody>
-                    </table><br>
+                    </table>
 
-                    <button type="submit" id="">Submit</button>
+                    <button type="submit" id="" style="margin-left: 530px;" class="btn btn-primary btn-sm">Submit</button>
+
+
                 </form>
+
             </div>
 
+            <!-- Show data Table -->
             <div class="col-md-6">
+                <h4><a href="edit.php">Update Data</a></h4>
                 <h1>Show Data</h1>
-                <table class="table table-striped">
+
+                <table class="table table-striped shadow p-2">
                     <tr>
                         <th>SL</th>
                         <th>Description</th>
@@ -124,6 +131,7 @@
 
                 </table>
             </div>
+
         </div>
     </div>
 
@@ -132,18 +140,21 @@
     <script>
         $(document).ready(function() {
             $("#submitBtn").on("click", function() {
-                var name = $("#name").val();
-                var email = $("#email").val();
+                var description = $("#description").val();
+               
+                var remark = $("#remark").val();
 
-                if (name != "") {
+                
+
+                if (description != "") {
                     var newRow = $("<tr>");
-                    newRow.append("<td> <input type='text' style='border:none' id='name'  name ='name[]' value=" + name + ">   </td>");
-                    newRow.append("<td> <input type='text' style='border:none' id='name'  name ='email[]' value=" + email + ">   </td>");
+                    newRow.append("<td> <input type='text' style='border:none' id='name'   name ='description[]' value='" + description + "'>   </td>"); //value='" + description + "'
+                    newRow.append("<td> <input type='text' style='border:none' id='name'  name ='remark[]' value='" + remark + "'>   </td>");
 
                     $("#dataTable tbody").append(newRow);
 
-                    $("#name").val("");
-                    $("#email").val("");
+                    $("#description").val("");
+                    $("#remark").val("");
                 }
 
             });
